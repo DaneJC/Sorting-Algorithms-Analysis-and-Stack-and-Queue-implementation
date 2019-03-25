@@ -12,9 +12,7 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /** Sort algorithm assessment GUI control class */
@@ -34,7 +32,7 @@ public class Controller {
     @FXML private TableColumn<SortAlgorithm, Long> timeCol;
 
     /* ===== data and sort object containers ===== */
-    private DataStructures data = new DataStructures();
+    private SortData data = new SortData();
     private BubbleSort bbSort = new BubbleSort();
     private SelectionSort selSort = new SelectionSort();
     private InsertionSort insSort = new InsertionSort();
@@ -48,6 +46,14 @@ public class Controller {
     private ObservableList<SortAlgorithm> tableData = FXCollections.observableArrayList();
 
     /* stack and queue tab ------------------------------------------------------------------------------------------ */
+    /* ===== buttons ===== */
+    @FXML private Button btnStackPop, btnStackPush, btnQuePop, btnQuePush;
+
+    /* ===== text fields ===== */
+    @FXML private TextField txfStackInput, txfQueInput;
+
+    /* ===== text areas ===== */
+    @FXML private TextArea txfStackOutput, txfQueOutput;
 
     /** Initialise/configure GUI controls */
     @FXML

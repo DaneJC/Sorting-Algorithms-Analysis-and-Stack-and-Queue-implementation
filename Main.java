@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 /** Main GUI class containing launch method */
 public class Main extends Application {
@@ -22,6 +23,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         root.getStylesheets().add(getClass().getResource("adsStyle.css").toExternalForm());
         primaryStage.setTitle("Algorithm Assessor");
+        primaryStage.getIcons().add(new Image(this.getClass().getResource("icon.png").toString()));
         primaryStage.setScene(new Scene(root, 520, 460));
         primaryStage.show();
     }
