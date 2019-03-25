@@ -7,8 +7,6 @@
  * @version 1.0
  */
 
-package sample;
-
 /** Selection sort algorithm class -> extends SortAlgorithm */
 public class SelectionSort extends SortAlgorithm{
 

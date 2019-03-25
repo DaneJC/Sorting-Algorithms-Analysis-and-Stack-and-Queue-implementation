@@ -7,8 +7,6 @@
  * @version 1.0
  */
 
-package sample;
-
 /** Bubble sort algorithm class -> extends SortAlgorithm */
 public class BubbleSort extends SortAlgorithm{
 

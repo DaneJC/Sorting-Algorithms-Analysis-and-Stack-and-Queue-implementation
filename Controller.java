@@ -9,8 +9,6 @@
  * @version 1.0
  */
 
-package sample;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

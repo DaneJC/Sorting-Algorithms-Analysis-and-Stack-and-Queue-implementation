@@ -7,8 +7,6 @@
  * @version 1.0
  */
 
-package sample;
-
 /** Insertion sort algorithm class -> extends SortAlgorithm */
 public class InsertionSort extends SortAlgorithm{
 

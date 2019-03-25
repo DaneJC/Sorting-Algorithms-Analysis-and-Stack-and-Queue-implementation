@@ -7,8 +7,6 @@
  * @version 1.0
  */
 
-package sample;
-
 /** Sort algorithm abstract parent class -> extends StopWatch for analysis purposes */
 public abstract class SortAlgorithm extends StopWatch{
 

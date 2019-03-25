@@ -8,8 +8,6 @@
  * @version 1.0
  */
 
-package sample;
-
 /** DataStructure class -> used to guarantee consistent sort analysis by ensuring each algorithm processes the same data set.
  *  Achieved by returning cloned instances of the identical data sets for every sort execution */
 public class DataStructures {

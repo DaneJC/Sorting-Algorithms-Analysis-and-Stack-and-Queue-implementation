@@ -7,8 +7,6 @@
  * @version 1.0
  */
 
-package sample;
-
 /** Stopwatch/Timer class -> used to time sort run time */
 public class StopWatch {
 
