@@ -11,7 +11,7 @@
 public class Stack {
 
     private final int SIZE = 10;  // set constant size of stack
-    private int stack[];  // stack base structure is array
+    private int[] stack;  // stack base structure is array
     private int top;
 
     /* ===== constructor ===== */
@@ -22,21 +22,28 @@ public class Stack {
 
     /* ===== methods ===== */
     /** push element onto stack */
-    private void push(int element) {
+    public void push(int element) throws IndexOutOfBoundsException{
 
-        if (!isFull()) {
+        if (isFull()) {
+
+            throw new IndexOutOfBoundsException("StackOverFlow:");
+        }
+        else{
             top++;
             stack[top] = element;
         }
     }
 
     /** pop element off top of stack */
-    private int pop() {
+    public int pop() throws IndexOutOfBoundsException{
 
         int itemPopped = -1;
 
-        if (!isEmpty()) {
+        if (isEmpty()) {
 
+            throw new IndexOutOfBoundsException("StackUnderFlow:");
+        }
+        else{
             itemPopped = stack[top];
             top--;
         }
@@ -47,7 +54,7 @@ public class Stack {
     }
 
     /** determine if stack is empty -> achieved by referencing the value of property `top` */
-    private boolean isEmpty(){
+    public boolean isEmpty(){
 
         if(top == -1)
             return true;
@@ -56,7 +63,7 @@ public class Stack {
     }
 
     /** determine if stack is full -> achieved by referencing the value of constant property `SIZE` */
-    private boolean isFull(){
+    public boolean isFull(){
 
         if(top == SIZE-1)
             return true;
@@ -65,7 +72,7 @@ public class Stack {
     }
 
     /** IF stack not empty -> return contents of top element in stack */
-    private int peek(){
+    public int peek(){
 
         if(!isEmpty())
             return stack[top];
@@ -74,18 +81,32 @@ public class Stack {
     }
 
     /** return size/amount of elements in stack */
-    private int size(){
+    public int size(){
 
         return top+1;
     }
 
     /** print elements in stack */
-    void print(){
+    public void print(){
 
         System.out.print("\nSTACK CONTAINS ==> ");
 
         for(int i=0; i<=top; i++)
 
             System.out.print(stack[i] + ",");
+    }
+
+    /** get stack method for GUI demonstration */
+    public int[] getStack() throws NegativeArraySizeException{
+
+        int[] returnStack;
+        if(isEmpty())
+            throw new NegativeArraySizeException();
+        else {
+            returnStack = new int[size()];
+            for (int i = 0; i < returnStack.length; i++)
+                returnStack[i] = stack[i];
+        }
+        return returnStack;
     }
 }

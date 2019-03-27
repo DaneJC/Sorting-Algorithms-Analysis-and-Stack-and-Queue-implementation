@@ -12,8 +12,21 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 /** Sort algorithm assessment GUI control class */
 public class Controller {
@@ -37,8 +50,7 @@ public class Controller {
     private SelectionSort selSort = new SelectionSort();
     private InsertionSort insSort = new InsertionSort();
 
-
-    /* ===== user selection containerse ===== */
+    /* ===== user selection containers ===== */
     private SortAlgorithm selectedSort = new BubbleSort();
     private int[] dataSet;
 
@@ -46,14 +58,26 @@ public class Controller {
     private ObservableList<SortAlgorithm> tableData = FXCollections.observableArrayList();
 
     /* stack and queue tab ------------------------------------------------------------------------------------------ */
+    /* ===== stack & queue objects ===== */
+    Stack stackObj = new Stack();
+
     /* ===== buttons ===== */
     @FXML private Button btnStackPop, btnStackPush, btnQuePop, btnQuePush;
 
     /* ===== text fields ===== */
     @FXML private TextField txfStackInput, txfQueInput;
 
-    /* ===== text areas ===== */
-    @FXML private TextArea txfStackOutput, txfQueOutput;
+    /* ===== stack labels & labels list ===== */
+    // create stack labels to be added to proceeding label list
+    @FXML private Label lblS1, lblS2, lblS3, lblS4, lblS5, lblS6, lblS7, lblS8, lblS9, lblS10;
+    @FXML private List<Label> stackLabels; // label list to hold preceding 10 stack labels
+
+    /* ===== queue labels & label array ===== */
+    //@FXML private Label lblQ1, lblQ2, lblQ3, lblQ4, lblQ5, lblQ6, lblQ7, lblQ8, lblQ9, lblQ10;
+    private Label queueLabels[] = new Label[10];// = {lblQ1, lblQ2, lblQ3, lblQ4, lblQ5, lblQ6, lblQ7, lblQ8, lblQ9, lblQ10};
+    private int[] stack;
+
+
 
     /** Initialise/configure GUI controls */
     @FXML
@@ -90,7 +114,12 @@ public class Controller {
         tableView.setItems(tableData);
 
         /* stack & queue tab ---------------------------------------------------------------------------------------- */
+        for (Label label : stackLabels) {
+            label.setText("");
+            label.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
 
+
+        }
     }
 
     /* Class methods ------------------------------------------------------------------------------------------------ */
@@ -163,11 +192,132 @@ public class Controller {
         tableData.add(selectedSort);
     }
 
+    /** Print information alert dialog displaying contents of methods string parameter -
+     *  char type {c : confirmation | e : error | i : information | w : warning} */
+    private void displayAlertDialog(char type, String title, String header, String message) {
+
+        // create specified alert dialog type
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        switch(type) {
+            case 'c':
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                break;
+            case 'e':
+                alert = new Alert(Alert.AlertType.ERROR);
+                break;
+            case 'i':
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                break;
+            case 'w':
+                alert = new Alert(Alert.AlertType.WARNING);
+                break;
+        }
+
+        // construct dialog contents
+        if(!title.isEmpty())
+            alert.setTitle(title);
+        if(!header.isEmpty())
+            alert.setHeaderText(header);
+        if(!message.isEmpty())
+            alert.setContentText(message);
+
+        // set dialog icon image
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(this.getClass().getResource("icon.png").toString()));
+
+        // Message dialog OK button click action
+        Optional<ButtonType> result = alert.showAndWait();
+        if (!result.isPresent() || result.get() == ButtonType.OK) {
+
+            // ...
+        }
+    }
+
+    /** Print stack contents to stack GUI labels list */
+    private void printStack(){
+
+        for (int i = 0; i < 10; i++) {
+            if (i < stack.length) {
+                stackLabels.get(i).setText(String.valueOf(stack[i]));
+                stackLabels.get(i).setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+            else {
+                stackLabels.get(i).setText("");
+                stackLabels.get(i).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        }
+    }
+
+    /** Print queue contents to queue GUI labels list */
+    private void printQueue(){
+
+        for (int i = 0; i < 10; i++) {
+            if (i < stack.length)
+                stackLabels.get(i).setText(String.valueOf(stack[i]));
+            else
+                stackLabels.get(i).setText("");
+        }
+    }
+
     /* Events ------------------------------------------------------------------------------------------------------- */
+    /* ===== sort assessor tab ===== */
+    /** Run sort assessment on sort button click */
+    @FXML
+    private void btnSortClick(){
+
+        getSelections();
+        runAssessment();
+        printResults();
+    }
+
+    /* ===== sort assessor tab ===== */
+    // - Stack -
+    /** Run sort assessment on sort button click */
+    @FXML
+    private void btnStackPush(){
+
+        try {
+            stackObj.push(Integer.valueOf(txfStackInput.getText()));
+            stack = stackObj.getStack();
+            printStack();
+        }
+        catch(IndexOutOfBoundsException e) {
+            displayAlertDialog('e', "Error", e.getMessage(), "Stack is full!");
+        }
+        catch(NumberFormatException e) {
+            displayAlertDialog('e', "Input Data Error", "Please enter integer values [0-9]", "");
+        }
+        catch(NegativeArraySizeException e){}
+    }
 
     /** Run sort assessment on sort button click */
     @FXML
-    private void buttonClicked(){
+    private void btnStackPop(){
+
+        try {
+            stackObj.pop();
+            stack = stackObj.getStack();
+            printStack();
+        }
+        catch(IndexOutOfBoundsException e) {
+            displayAlertDialog('e', "Error", e.getMessage(), "Stack is empty!");
+        }
+        catch(NegativeArraySizeException e){}
+    }
+
+    // - Queue -
+    /** Run sort assessment on sort button click */
+    @FXML
+    private void btnQueuePush(){
+
+        getSelections();
+        runAssessment();
+        printResults();
+    }
+
+    /** Run sort assessment on sort button click */
+    @FXML
+    private void btnQueuePop(){
 
         getSelections();
         runAssessment();
