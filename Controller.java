@@ -11,12 +11,15 @@
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -280,6 +283,8 @@ public class Controller {
             stackObj.push(Integer.valueOf(txfStackInput.getText()));
             stack = stackObj.getStack();
             printStack();
+            txfStackInput.clear();
+
         }
         catch(IndexOutOfBoundsException e) {
             displayAlertDialog('e', "Error", e.getMessage(), "Stack is full!");
@@ -302,7 +307,16 @@ public class Controller {
         catch(IndexOutOfBoundsException e) {
             displayAlertDialog('e', "Error", e.getMessage(), "Stack is empty!");
         }
-        catch(NegativeArraySizeException e){}
+        catch(NegativeArraySizeException e){
+            stackLabels.get(0).setText("");
+            stackLabels.get(0).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
+    }
+    @FXML
+    private void keyPressedStackInput(KeyEvent e){
+
+        if(e.getCode().equals(KeyCode.ENTER))
+            btnStackPush();
     }
 
     // - Queue -
@@ -310,9 +324,20 @@ public class Controller {
     @FXML
     private void btnQueuePush(){
 
-        getSelections();
-        runAssessment();
-        printResults();
+        try {
+            stackObj.push(Integer.valueOf(txfStackInput.getText()));
+            stack = stackObj.getStack();
+            printStack();
+            txfStackInput.clear();
+
+        }
+        catch(IndexOutOfBoundsException e) {
+            displayAlertDialog('e', "Error", e.getMessage(), "Stack is full!");
+        }
+        catch(NumberFormatException e) {
+            displayAlertDialog('e', "Input Data Error", "Please enter integer values [0-9]", "");
+        }
+        catch(NegativeArraySizeException e){}
     }
 
     /** Run sort assessment on sort button click */
@@ -322,5 +347,12 @@ public class Controller {
         getSelections();
         runAssessment();
         printResults();
+    }
+
+    @FXML
+    private void keyPressedQueueInput(KeyEvent e){
+
+        if(e.getCode().equals(KeyCode.ENTER))
+            btnQueuePush();
     }
 }
