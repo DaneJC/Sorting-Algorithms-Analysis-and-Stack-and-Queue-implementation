@@ -1,15 +1,16 @@
 /**
  * Class: B.Sc. Cloud Computing
  * Instructor: Gary Cullen
- * Description: Stack data structure class
+ * Description: Stack integer data structure class
  * Date: 01/03/2019
  * @author Dane Campbell [L00142041]
  * @version 1.0
  */
 
-/** Stack data structure class */
+/** Stack integer data structure class */
 public class Stack {
 
+    /* ===== properties ===== */
     private final int SIZE = 10;  // set constant size of stack
     private int[] stack;  // stack base structure is array
     private int top;

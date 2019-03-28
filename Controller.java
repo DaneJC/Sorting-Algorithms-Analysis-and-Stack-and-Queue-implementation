@@ -280,11 +280,11 @@ public class Controller {
     private void btnStackPush(){
 
         try {
-            stackObj.push(Integer.valueOf(txfStackInput.getText()));
+            String text = txfStackInput.getText();
+            txfStackInput.clear();
+            stackObj.push(Integer.valueOf(text));
             stack = stackObj.getStack();
             printStack();
-            txfStackInput.clear();
-
         }
         catch(IndexOutOfBoundsException e) {
             displayAlertDialog('e', "Error", e.getMessage(), "Stack is full!");

@@ -178,8 +178,8 @@
                      </rowConstraints>
                      <children>
                         <TextField fx:id="txfQueInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" />
-                        <Button fx:id="btnQuePop" mnemonicParsing="false" prefWidth="50.0" text="POP" GridPane.columnIndex="2" />
-                        <Button fx:id="btnQuePush" mnemonicParsing="false" prefWidth="50.0" text="PUSH" /></children>
+                        <Button fx:id="btnQuePop" mnemonicParsing="false" prefWidth="60.0" text="REMOVE" GridPane.columnIndex="2" />
+                        <Button fx:id="btnQuePush" mnemonicParsing="false" prefWidth="60.0" text="INSERT" /></children>
                   </GridPane>
                   <GridPane gridLinesVisible="true" layoutX="127.0" layoutY="167.0" prefHeight="30.0" prefWidth="380.0">
                      <columnConstraints>
