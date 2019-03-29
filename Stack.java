@@ -27,7 +27,7 @@ public class Stack {
 
         if (isFull()) {
 
-            throw new IndexOutOfBoundsException("StackOverFlow:");
+            throw new IndexOutOfBoundsException("Stack OverFlow:");
         }
         else{
             top++;
@@ -42,7 +42,7 @@ public class Stack {
 
         if (isEmpty()) {
 
-            throw new IndexOutOfBoundsException("StackUnderFlow:");
+            throw new IndexOutOfBoundsException("Stack UnderFlow:");
         }
         else{
             itemPopped = stack[top];
@@ -54,7 +54,7 @@ public class Stack {
 //        poppedVal=stackObj.pop();
     }
 
-    /** determine if stack is empty -> achieved by referencing the value of property `top` */
+    /** determine if stack is empty -> achieved by assessing the value of property `top` */
     public boolean isEmpty(){
 
         if(top == -1)
@@ -63,7 +63,7 @@ public class Stack {
             return false;
     }
 
-    /** determine if stack is full -> achieved by referencing the value of constant property `SIZE` */
+    /** determine if stack is full -> achieved by assessing the value of constant property `SIZE` */
     public boolean isFull(){
 
         if(top == SIZE-1)
@@ -72,7 +72,7 @@ public class Stack {
             return false;
     }
 
-    /** IF stack not empty -> return contents of top element in stack */
+    /** IF stack not empty -> return contents of top index in stack */
     public int peek(){
 
         if(!isEmpty())

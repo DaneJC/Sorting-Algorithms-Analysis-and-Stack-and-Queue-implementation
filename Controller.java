@@ -11,25 +11,21 @@
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 
 /** Sort algorithm assessment GUI control class */
 public class Controller {
@@ -63,24 +59,25 @@ public class Controller {
     /* stack and queue tab ------------------------------------------------------------------------------------------ */
     /* ===== stack & queue objects ===== */
     Stack stackObj = new Stack();
+    Queue queueObj = new Queue();
 
     /* ===== buttons ===== */
-    @FXML private Button btnStackPop, btnStackPush, btnQuePop, btnQuePush;
+    @FXML private Button btnStackPop, btnStackPush, btnQueRemove, btnQueInsert;
 
     /* ===== text fields ===== */
     @FXML private TextField txfStackInput, txfQueInput;
 
-    /* ===== stack labels & labels list ===== */
-    // create stack labels to be added to proceeding label list
+    /* ===== stack properties ===== */
+    // create stack labels to be added to proceeding stack label list
     @FXML private Label lblS1, lblS2, lblS3, lblS4, lblS5, lblS6, lblS7, lblS8, lblS9, lblS10;
-    @FXML private List<Label> stackLabels; // label list to hold preceding 10 stack labels
+    @FXML private List<Label> stackLabels; // stack label list to hold preceding 10 stack labels
+    private int[] stack;  // to retrieve occupied elements of stack objects array and display contents via stack labels list
 
-    /* ===== queue labels & label array ===== */
-    //@FXML private Label lblQ1, lblQ2, lblQ3, lblQ4, lblQ5, lblQ6, lblQ7, lblQ8, lblQ9, lblQ10;
-    private Label queueLabels[] = new Label[10];// = {lblQ1, lblQ2, lblQ3, lblQ4, lblQ5, lblQ6, lblQ7, lblQ8, lblQ9, lblQ10};
-    private int[] stack;
-
-
+    /* ===== queue properties ===== */
+    // create queue labels to be added to proceeding queue label list
+    @FXML private Label lblQ1, lblQ2, lblQ3, lblQ4, lblQ5, lblQ6, lblQ7, lblQ8, lblQ9, lblQ10;
+    @FXML private List<Label> queueLabels;  // queue label list to hold preceding 10 queue labels
+    private int[] queue;  // to retrieve occupied elements of queue objects array and display contents via queue labels list
 
     /** Initialise/configure GUI controls */
     @FXML
@@ -117,9 +114,11 @@ public class Controller {
         tableView.setItems(tableData);
 
         /* stack & queue tab ---------------------------------------------------------------------------------------- */
-        for (Label label : stackLabels) {
-            label.setText("");
-            label.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+        for (int i=0; i<10; i++){
+            stackLabels.get(i).setText("");
+            queueLabels.get(i).setText("");
+            stackLabels.get(i).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+            queueLabels.get(i).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
 
 
         }
@@ -187,6 +186,7 @@ public class Controller {
             selectedSort.Sort(dataSet);
             selectedSort.stop();
         }
+        System.out.println(selectedSort.getElapsedTime());
     }
 
     /** Log results in tableview */
@@ -254,11 +254,19 @@ public class Controller {
     /** Print queue contents to queue GUI labels list */
     private void printQueue(){
 
+        System.out.println("head: "+queueObj.getHead()+" tail: "+queueObj.getTail());
+        int queIndex = queueObj.getHead();
         for (int i = 0; i < 10; i++) {
-            if (i < stack.length)
-                stackLabels.get(i).setText(String.valueOf(stack[i]));
-            else
-                stackLabels.get(i).setText("");
+            if (queIndex <= queueObj.getTail() && queIndex >= queueObj.getHead()) {
+                queueLabels.get(i).setText(String.valueOf(queue[queIndex]));
+                queueLabels.get(i).setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+            else {
+                queueLabels.get(i).setText("");
+                queueLabels.get(i).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+            queIndex++;
+
         }
     }
 
@@ -274,8 +282,8 @@ public class Controller {
     }
 
     /* ===== sort assessor tab ===== */
-    // - Stack -
-    /** Run sort assessment on sort button click */
+    // ----- Stack ------
+    /** Get stack input text field data -> confirm integer -> push value onto stack -> display updated stack */
     @FXML
     private void btnStackPush(){
 
@@ -295,7 +303,7 @@ public class Controller {
         catch(NegativeArraySizeException e){}
     }
 
-    /** Run sort assessment on sort button click */
+    /** Pop index at top of stack -> display updated stack */
     @FXML
     private void btnStackPop(){
 
@@ -312,6 +320,8 @@ public class Controller {
             stackLabels.get(0).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
         }
     }
+
+    /** Push stack input textField contents onto stack on Enter key pressed event */
     @FXML
     private void keyPressedStackInput(KeyEvent e){
 
@@ -319,20 +329,20 @@ public class Controller {
             btnStackPush();
     }
 
-    // - Queue -
-    /** Run sort assessment on sort button click */
+    // ----- Queue -----
+    /** Get queue input text field data -> confirm integer -> insert value into queue -> display updated queue */
     @FXML
-    private void btnQueuePush(){
+    private void btnQueueInsert(){
 
         try {
-            stackObj.push(Integer.valueOf(txfStackInput.getText()));
-            stack = stackObj.getStack();
-            printStack();
-            txfStackInput.clear();
+            queueObj.insert(Integer.valueOf(txfQueInput.getText()));
+            queue = queueObj.getQueue();
+            printQueue();
+            txfQueInput.clear();
 
         }
         catch(IndexOutOfBoundsException e) {
-            displayAlertDialog('e', "Error", e.getMessage(), "Stack is full!");
+            displayAlertDialog('e', "Error", e.getMessage(), "Queue is full!");
         }
         catch(NumberFormatException e) {
             displayAlertDialog('e', "Input Data Error", "Please enter integer values [0-9]", "");
@@ -340,19 +350,29 @@ public class Controller {
         catch(NegativeArraySizeException e){}
     }
 
-    /** Run sort assessment on sort button click */
+    /** Remove oldest index of queue if present -> display updated queue */
     @FXML
-    private void btnQueuePop(){
+    private void btnQueueRemove(){
 
-        getSelections();
-        runAssessment();
-        printResults();
+        try {
+            queueObj.remove();
+            queue = queueObj.getQueue();
+            printQueue();
+        }
+        catch(IndexOutOfBoundsException e) {
+            displayAlertDialog('e', "Error", e.getMessage(), "Queue is empty!");
+        }
+        catch(NegativeArraySizeException e){
+            queueLabels.get(0).setText("");
+            queueLabels.get(0).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
     }
 
+    /** Push queue input textField contents onto queue on Enter key pressed event */
     @FXML
     private void keyPressedQueueInput(KeyEvent e){
 
         if(e.getCode().equals(KeyCode.ENTER))
-            btnQueuePush();
+            btnQueueInsert();
     }
 }

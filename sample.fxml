@@ -20,9 +20,6 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import java.util.ArrayList?>
-<?import javafx.scene.input.KeyCode?>
-<?import javafx.scene.input.KeyEvent?>
-
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="522.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
   <tabs>
     <Tab text="Algo Assessor">
@@ -115,7 +112,7 @@
                      </rowConstraints>
                      <children>
                         <Button fx:id="btnStackPush" mnemonicParsing="false" onAction="#btnStackPush" prefHeight="25.0" prefWidth="50.0" text="PUSH" />
-                        <TextField fx:id="txfStackInput" maxWidth="-Infinity" onKeyPressed="#keyPressedStackInput" prefHeight="25.0" prefWidth="50.0" GridPane.rowIndex="1">
+                        <TextField fx:id="txfStackInput" maxWidth="-Infinity" promptText="Integers" onKeyPressed="#keyPressedStackInput" prefHeight="25.0" prefWidth="50.0" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -152,22 +149,22 @@
                         <Label fx:id="lblS1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="40.0" textAlignment="JUSTIFY" GridPane.rowIndex="9" />
 
                          <fx:define>
-                             <ArrayList fx:id="stackLabels" >
-                                 <fx:reference source="lblS1"/>
-                                 <fx:reference source="lblS2"/>
-                                 <fx:reference source="lblS3"/>
-                                 <fx:reference source="lblS4"/>
-                                 <fx:reference source="lblS5"/>
-                                 <fx:reference source="lblS6"/>
-                                 <fx:reference source="lblS7"/>
-                                 <fx:reference source="lblS8"/>
-                                 <fx:reference source="lblS9"/>
-                                 <fx:reference source="lblS10"/>
+                             <ArrayList fx:id="stackLabels">
+                                 <fx:reference source="lblS1" />
+                                 <fx:reference source="lblS2" />
+                                 <fx:reference source="lblS3" />
+                                 <fx:reference source="lblS4" />
+                                 <fx:reference source="lblS5" />
+                                 <fx:reference source="lblS6" />
+                                 <fx:reference source="lblS7" />
+                                 <fx:reference source="lblS8" />
+                                 <fx:reference source="lblS9" />
+                                 <fx:reference source="lblS10" />
                              </ArrayList>
                          </fx:define>
                      </children>
                   </GridPane>
-                  <GridPane hgap="2.0" layoutX="245.0" layoutY="203.0" prefHeight="30.0" prefWidth="147.0">
+                  <GridPane hgap="2.0" layoutX="220.0" layoutY="203.0" prefHeight="30.0" prefWidth="193.0">
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -177,9 +174,9 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TextField fx:id="txfQueInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" />
-                        <Button fx:id="btnQuePop" mnemonicParsing="false" prefWidth="60.0" text="REMOVE" GridPane.columnIndex="2" />
-                        <Button fx:id="btnQuePush" mnemonicParsing="false" prefWidth="60.0" text="INSERT" /></children>
+                        <TextField fx:id="txfQueInput" maxWidth="-Infinity" promptText="Integers" onKeyPressed="#keyPressedQueueInput" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" />
+                        <Button fx:id="btnQueRemove" mnemonicParsing="false" onAction="#btnQueueRemove" prefWidth="70.0" text="REMOVE" GridPane.columnIndex="2" />
+                        <Button fx:id="btnQueInsert" mnemonicParsing="false" onAction="#btnQueueInsert" prefHeight="25.0" prefWidth="70.0" text="INSERT" /></children>
                   </GridPane>
                   <GridPane gridLinesVisible="true" layoutX="127.0" layoutY="167.0" prefHeight="30.0" prefWidth="380.0">
                      <columnConstraints>
@@ -198,31 +195,31 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="lblQ1" GridPane.columnIndex="0" />
-                        <Label fx:id="lblQ2" GridPane.columnIndex="1" />
-                        <Label fx:id="lblQ3" GridPane.columnIndex="2" />
-                        <Label fx:id="lblQ4" GridPane.columnIndex="3" />
-                        <Label fx:id="lblQ5" GridPane.columnIndex="4" />
-                        <Label fx:id="lblQ6" GridPane.columnIndex="5" />
-                        <Label fx:id="lblQ7" GridPane.columnIndex="6" />
-                        <Label fx:id="lblQ8" GridPane.columnIndex="7" />
-                        <Label fx:id="lblQ9" GridPane.columnIndex="8" />
-                        <Label fx:id="lblQ10" GridPane.columnIndex="9" />
+                        <Label fx:id="lblQ1" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="0" />
+                        <Label fx:id="lblQ2" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="1" />
+                        <Label fx:id="lblQ3" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="2" />
+                        <Label fx:id="lblQ4" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="3" />
+                        <Label fx:id="lblQ5" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="4" />
+                        <Label fx:id="lblQ6" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="5" />
+                        <Label fx:id="lblQ7" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="6" />
+                        <Label fx:id="lblQ8" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="7" />
+                        <Label fx:id="lblQ9" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="8" />
+                        <Label fx:id="lblQ10" prefHeight="30.0" prefWidth="100.0" textAlignment="JUSTIFY" GridPane.columnIndex="9" />
 
-                         <!--<fx:define>-->
-                             <!--<ArrayList fx:id="stackLabels" >-->
-                                 <!--<fx:reference source="lblQ1"/>-->
-                                 <!--<fx:reference source="lblQ2"/>-->
-                                 <!--<fx:reference source="lblQ3"/>-->
-                                 <!--<fx:reference source="lblQ4"/>-->
-                                 <!--<fx:reference source="lblQ5"/>-->
-                                 <!--<fx:reference source="lblQ6"/>-->
-                                 <!--<fx:reference source="lblQ7"/>-->
-                                 <!--<fx:reference source="lblQ8"/>-->
-                                 <!--<fx:reference source="lblQ9"/>-->
-                                 <!--<fx:reference source="lblQ10"/>-->
-                             <!--</ArrayList>-->
-                         <!--</fx:define>-->
+                         <fx:define>
+                             <ArrayList fx:id="queueLabels">
+                                 <fx:reference source="lblQ1" />
+                                 <fx:reference source="lblQ2" />
+                                 <fx:reference source="lblQ3" />
+                                 <fx:reference source="lblQ4" />
+                                 <fx:reference source="lblQ5" />
+                                 <fx:reference source="lblQ6" />
+                                 <fx:reference source="lblQ7" />
+                                 <fx:reference source="lblQ8" />
+                                 <fx:reference source="lblQ9" />
+                                 <fx:reference source="lblQ10" />
+                             </ArrayList>
+                         </fx:define>
                      </children>
                   </GridPane>
                   <Label layoutX="300.0" layoutY="145.0" text="QUEUE" />
