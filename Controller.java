@@ -11,8 +11,12 @@
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -22,8 +26,11 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +50,35 @@ public class Controller {
     @FXML private TableColumn<SortAlgorithm, Integer> swapsCol;
     @FXML private TableColumn<SortAlgorithm, Long> timeCol;
 
+    /* ===== table view list ===== */
+    private ObservableList<SortAlgorithm> tableData = FXCollections.observableArrayList();
+
+    /* ===== sort attempts & run time logs required to averaged down multiple test results for graph population ===== */
+    // standard bubble sort | [0]
+    private int[] stdBubbleRunTimeLog = new int[9];
+    private int[] stdBubbleCount = new int[9];
+    // enhanced bubble sort | [1]
+    private int[] enhBubbleRunTimeLog = new int[9];
+    private int[] enhBubbleCount = new int[9];
+    // selection sort | [2]
+    private int[] selectionRunTimeLog = new int[9];
+    private int[] selectionCount = new int[9];
+    // insertion sort | [3]
+    private int[] insertionRunTimeLog = new int[9];
+    private int[] insertionCount = new int[9];
+
+    // lists to hold run time and attemps list
+    private int[][] runTimeLogs = {stdBubbleRunTimeLog, enhBubbleRunTimeLog, selectionRunTimeLog, insertionRunTimeLog};
+    private int[][] sortCountLogs = {stdBubbleCount, enhBubbleCount, selectionCount, insertionCount};
+
+    // log selector used to specify which logs to access when logging run times and attempts.
+    private int logSelector = 0; // 0: bubble std | 1: bubble enh | 2: selection | 3: insertion |
+    private int logIndexSelector = 0;
+
+    /* 0: 1,000-sorted   | 1: 1,000-inverse   |  2: 1,000-random   */
+    /* 3: 10,000-sorted  | 4: 10,000-inverse  |  5: 10,000-random  */
+    /* 6: 100,000-sorted | 7: 100,000-inverse |  8: 100,000-random */
+
     /* ===== data and sort object containers ===== */
     private SortData data = new SortData();
     private BubbleSort bbSort = new BubbleSort();
@@ -53,13 +89,10 @@ public class Controller {
     private SortAlgorithm selectedSort = new BubbleSort();
     private int[] dataSet;
 
-    /* ===== table view lost ===== */
-    private ObservableList<SortAlgorithm> tableData = FXCollections.observableArrayList();
-
     /* stack and queue tab ------------------------------------------------------------------------------------------ */
     /* ===== stack & queue objects ===== */
-    Stack stackObj = new Stack();
-    Queue queueObj = new Queue();
+    private Stack stackObj = new Stack();
+    private Queue queueObj = new Queue();
 
     /* ===== buttons ===== */
     @FXML private Button btnStackPop, btnStackPush, btnQueRemove, btnQueInsert;
@@ -132,39 +165,62 @@ public class Controller {
         /* ===== get data set selections ===== */
         if(cBoxSize.getSelectionModel().getSelectedIndex() == 0) { /* => 1000 -------------- */
 
-            if(cBoxDSet.getSelectionModel().getSelectedIndex() == 0) // => sorted
+            if (cBoxDSet.getSelectionModel().getSelectedIndex() == 0) { // => sorted
                 dataSet = data.getSorted1000();
-            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 1) // => inverse
+                logIndexSelector = 0;
+            } else if (cBoxDSet.getSelectionModel().getSelectedIndex() == 1){ // => inverse
                 dataSet = data.getInverse1000();
-            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 2) // => random
+                logIndexSelector = 1;
+            }
+            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 2) { // => random
                 dataSet = data.getRandom1000();
+                logIndexSelector = 2;
+            }
         }
         else if(cBoxSize.getSelectionModel().getSelectedIndex() == 1) { /* => 10000 -------- */
 
-            if(cBoxDSet.getSelectionModel().getSelectedIndex() == 0) // => sorted
+            if(cBoxDSet.getSelectionModel().getSelectedIndex() == 0) { // => sorted
                 dataSet = data.getSorted10000();
-            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 1) // => inverse
+                logIndexSelector = 3;
+            }
+            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 1) { // => inverse
                 dataSet = data.getInverse10000();
-            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 2) // => random
+                logIndexSelector = 4;
+            }
+            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 2) { // => random
                 dataSet = data.getRandom10000();
+                logIndexSelector = 5;
+            }
         }
         else if(cBoxSize.getSelectionModel().getSelectedIndex() == 2) { /* => 100000 ------- */
 
-            if(cBoxDSet.getSelectionModel().getSelectedIndex() == 0) // => sorted
+            if(cBoxDSet.getSelectionModel().getSelectedIndex() == 0) { // => sorted
                 dataSet = data.getSorted100000();
-            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 1) // => inverse
+                logIndexSelector = 6;
+            }
+            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 1) { // => inverse
                 dataSet = data.getInverse100000();
-            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 2) // => random
+                logIndexSelector = 7;
+            }
+            else if(cBoxDSet.getSelectionModel().getSelectedIndex() == 2) { // => random
                 dataSet = data.getRandom100000();
+                logIndexSelector = 8;
+            }
         }
 
         /* ===== get sort algorithm selection ===== */
-        if(cBoxSort.getSelectionModel().getSelectedIndex() == 0 || cBoxSort.getSelectionModel().getSelectedIndex() == 1) // => bubble sort
+        if(cBoxSort.getSelectionModel().getSelectedIndex() == 0 || cBoxSort.getSelectionModel().getSelectedIndex() == 1) { // => bubble sort
             selectedSort = new BubbleSort();
-        else if(cBoxSort.getSelectionModel().getSelectedIndex() == 2) // => selection
+            logSelector = 0;
+        }
+        else if(cBoxSort.getSelectionModel().getSelectedIndex() == 2) { // => selection
             selectedSort = new SelectionSort();
-        else if(cBoxSort.getSelectionModel().getSelectedIndex() == 3) // => insertion
+            logSelector = 2;
+        }
+        else if(cBoxSort.getSelectionModel().getSelectedIndex() == 3){ // => insertion
             selectedSort = new InsertionSort();
+            logSelector = 3;
+        }
 
         /* print information --------------------------------------------------------------- */
         selectedSort.setAlgoName((String) cBoxSort.getSelectionModel().getSelectedItem());
@@ -177,6 +233,7 @@ public class Controller {
 
         if(selectedSort instanceof BubbleSort && cBoxSort.getSelectionModel().getSelectedIndex() == 1) {
 
+            logSelector = 1;
             selectedSort.start();
             selectedSort.SortENH(dataSet);  // reason an interface was not used for the enhanced algorithms - produces error here
             selectedSort.stop();
@@ -186,6 +243,10 @@ public class Controller {
             selectedSort.Sort(dataSet);
             selectedSort.stop();
         }
+        // log sort time for graph result population
+        runTimeLogs[logSelector][logIndexSelector] += selectedSort.getElapsedTime();
+        // count amount of assessments to average down the results
+        sortCountLogs[logSelector][logIndexSelector] += 1;
         System.out.println(selectedSort.getElapsedTime());
     }
 
@@ -254,19 +315,29 @@ public class Controller {
     /** Print queue contents to queue GUI labels list */
     private void printQueue(){
 
-        System.out.println("head: "+queueObj.getHead()+" tail: "+queueObj.getTail());
-        int queIndex = queueObj.getHead();
         for (int i = 0; i < 10; i++) {
-            if (queIndex <= queueObj.getTail() && queIndex >= queueObj.getHead()) {
-                queueLabels.get(i).setText(String.valueOf(queue[queIndex]));
+            if (i < queue.length) {
+                queueLabels.get(i).setText(String.valueOf(queue[i]));
                 queueLabels.get(i).setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
             }
             else {
                 queueLabels.get(i).setText("");
                 queueLabels.get(i).setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
             }
-            queIndex++;
+        }
+    }
 
+    /** Compute average algorithm run times  */
+    private void computeRunTimes(){
+
+        // current run time log index / amount of times algorithm was executed = average
+        for(int log = 0; log < runTimeLogs.length; log++) {
+            for (int i = 0; i < runTimeLogs[log].length; i++) {
+
+                try {
+                    runTimeLogs[log][i] = runTimeLogs[log][i] / sortCountLogs[log][i];
+                } catch (ArithmeticException e) {/* System.out.println("ArithmeticException: "+e.getMessage());*/}
+            }
         }
     }
 
@@ -281,6 +352,37 @@ public class Controller {
         printResults();
     }
 
+    /** Submit & review assessment via graph on submit button click */
+    @FXML
+    private void btnSubmitClick(ActionEvent event){
+
+        computeRunTimes();
+        try {
+            onOpenDialog(event);
+        }
+        catch(IOException e){
+            System.out.println("IOExeption: "+e.getMessage());
+        }
+        // create custom graph alert dialog
+
+    }
+
+    /** Open custom graph dialog when sort tab submit button pressed */
+    @FXML
+    private void onOpenDialog(ActionEvent event) throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraphDialog.fxml"));
+        Parent parent = fxmlLoader.load();
+        GraphDialogController dialogController = fxmlLoader.getController();
+        dialogController.setGraphContents(runTimeLogs);
+
+        Scene scene = new Scene(parent, 1200, 600);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
     /* ===== sort assessor tab ===== */
     // ----- Stack ------
     /** Get stack input text field data -> confirm integer -> push value onto stack -> display updated stack */
@@ -291,7 +393,7 @@ public class Controller {
             String text = txfStackInput.getText();
             txfStackInput.clear();
             stackObj.push(Integer.valueOf(text));
-            stack = stackObj.getStack();
+            stack = stackObj.printFormatStack();
             printStack();
         }
         catch(IndexOutOfBoundsException e) {
@@ -309,7 +411,7 @@ public class Controller {
 
         try {
             stackObj.pop();
-            stack = stackObj.getStack();
+            stack = stackObj.printFormatStack();
             printStack();
         }
         catch(IndexOutOfBoundsException e) {
@@ -336,10 +438,8 @@ public class Controller {
 
         try {
             queueObj.insert(Integer.valueOf(txfQueInput.getText()));
-            queue = queueObj.getQueue();
+            queue = queueObj.printFormatQueue();
             printQueue();
-            txfQueInput.clear();
-
         }
         catch(IndexOutOfBoundsException e) {
             displayAlertDialog('e', "Error", e.getMessage(), "Queue is full!");
@@ -348,6 +448,7 @@ public class Controller {
             displayAlertDialog('e', "Input Data Error", "Please enter integer values [0-9]", "");
         }
         catch(NegativeArraySizeException e){}
+        txfQueInput.clear();
     }
 
     /** Remove oldest index of queue if present -> display updated queue */
@@ -356,7 +457,7 @@ public class Controller {
 
         try {
             queueObj.remove();
-            queue = queueObj.getQueue();
+            queue = queueObj.printFormatQueue();
             printQueue();
         }
         catch(IndexOutOfBoundsException e) {

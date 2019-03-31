@@ -96,26 +96,33 @@ public class Queue {
         return noElements;
     }
 
-    /** get stack method for GUI demonstration */
-    public int[] getQueue() throws NegativeArraySizeException{
+    /** Create & return an array comprised of occupied queue elements for GUI demonstration */
+    public int[] printFormatQueue() throws NegativeArraySizeException{
 
-//        int[] returnQueue;
-//        if(isEmpty())
-//            throw new NegativeArraySizeException();
-//        else {
-//            if(head == tail) {
-//                returnQueue = new int[1];
-//                returnQueue[0] = queue[0];
-//            }
-//            else {
-//                int index = 0;
-//                returnQueue = new int[size()];
-//                for (int i = head; i < tail; i++)
-//                    returnQueue[index] = queue[i];
-//            }
-//        }
-//        return returnQueue;
-        return queue;
+        int[] returnQueue;
+        if(isEmpty())
+            throw new NegativeArraySizeException();
+        else {
+            if(head == tail) {  // IF only one element in array
+                returnQueue = new int[1];
+                returnQueue[0] = queue[head];  // log contents of that element
+            }
+            else {
+                int index = 0;
+                returnQueue = new int[size()];
+                if(noElements <= SIZE - head) {  // IF tail has not looped back to beginning of queue array
+                    for (int i = head; i <= tail; i++)
+                        returnQueue[index++] = queue[i];
+                }
+                else if(noElements >  SIZE - head) {  // ELSE IF tail has looped back to beginning of queue array
+                    for (int i = head; i < SIZE; i++)
+                        returnQueue[index++] = queue[i];  // log values from head index to last index of queue array
+                    for (int i = 0; i <= tail; i++)
+                        returnQueue[index++] = queue[i];  // then log values from first index to tail index of queue array
+                }
+            }
+        }
+        return returnQueue;
     }
 
     /** Getters - GUI purposes */

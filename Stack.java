@@ -97,8 +97,8 @@ public class Stack {
             System.out.print(stack[i] + ",");
     }
 
-    /** get stack method for GUI demonstration */
-    public int[] getStack() throws NegativeArraySizeException{
+    /** Create & return an array comprised of occupied stack elements for GUI demonstration */
+    public int[] printFormatStack() throws NegativeArraySizeException{
 
         int[] returnStack;
         if(isEmpty())
