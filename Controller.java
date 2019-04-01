@@ -369,7 +369,7 @@ public class Controller {
 
     /** Open custom graph dialog when sort tab submit button pressed */
     @FXML
-    private void onOpenDialog(ActionEvent event) throws IOException {
+    void onOpenDialog(ActionEvent event) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraphDialog.fxml"));
         Parent parent = fxmlLoader.load();
