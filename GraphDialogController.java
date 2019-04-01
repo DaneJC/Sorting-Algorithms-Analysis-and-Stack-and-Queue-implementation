@@ -1,4 +1,11 @@
-
+/**
+ * Class: B.Sc. Cloud Computing
+ * Instructor: Gary Cullen
+ * Description: Bar chart analysis review dialog control/logic class.
+ * Date: 10/03/2019
+ * @author Dane Campbell [L00142041]
+ * @version 1.0
+ */
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +15,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+/** Bar chart analysis review dialog control/logic class. */
 public class GraphDialogController {
 
     /* ===== create chart and x-category + y-number axises ===== */
@@ -72,7 +80,7 @@ public class GraphDialogController {
         Insertion100000.setName("Insertion");
     }
 
-
+    /** Set contents of graph with contents 2D array parameter */
     public void setGraphContents(int[][] sortRunTimeLog) {
 
         for (int log = 0; log < sortRunTimeLog.length; log++){
