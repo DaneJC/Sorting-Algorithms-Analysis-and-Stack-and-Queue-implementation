@@ -57,21 +57,23 @@ public class GraphDialogController {
         xAxis100000.setLabel("Algorithm");
         yAxis100000.setLabel("Time(m-secs)");
 
-
-//        seriesBubbleStandard.getData().add(new XYChart.Data(chartLabels[0], 80));
-
-//        chartData.addAll(seriesBubbleStandard);
-
-
-    }
-
-
-    public void setGraphContents(int[][] sortRunTimeLog) {
-
+        /* ===== bar chart series properties ===== */
         BubbleS1000.setName("Bubble (s)");
         BubbleE1000.setName("Bubble (e)");
         Selection1000.setName("Selection");
         Insertion1000.setName("Insertion");
+        BubbleS10000.setName("Bubble (s)");
+        BubbleE10000.setName("Bubble (e)");
+        Selection10000.setName("Selection");
+        Insertion10000.setName("Insertion");
+        BubbleS100000.setName("Bubble (s)");
+        BubbleE100000.setName("Bubble (e)");
+        Selection100000.setName("Selection");
+        Insertion100000.setName("Insertion");
+    }
+
+
+    public void setGraphContents(int[][] sortRunTimeLog) {
 
         for (int log = 0; log < sortRunTimeLog.length; log++){
             for (int i = 0; i < sortRunTimeLog[log].length; i++) {
@@ -119,18 +121,5 @@ public class GraphDialogController {
         chartData100000.addAll(BubbleS100000,BubbleE100000,Selection100000,Insertion100000);
         bc100000.setData(chartData100000);
 
-//        Timeline tl = new Timeline();
-//        tl.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-//                new EventHandler<ActionEvent>() {
-//                    @Override public void handle(ActionEvent actionEvent) {
-//                        for (XYChart.Series<String, Number>series : bc.getData()) {
-//                            for (XYChart.Data<String, Number> data : series.getData()) {
-//                                data.setXValue(Math.random() * 100);
-//                            }
-//                        }
-//                    }
-//                }));
-//        tl.setCycleCount(Animation.INDEFINITE);
-//        tl.play();
     }
 }
