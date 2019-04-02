@@ -50,9 +50,9 @@ public class GraphDialogController {
         bc1000.setData(chartData1000);
         bc10000.setData(chartData10000);
         bc100000.setData(chartData100000);
-        bc1000.setTitle("1,000");
-        bc10000.setTitle("10,000");
-        bc100000.setTitle("100,000");
+        bc1000.setTitle("1K");
+        bc10000.setTitle("10K");
+        bc100000.setTitle("100K");
         bc1000.setBarGap(1);
         bc10000.setBarGap(1);
         bc100000.setBarGap(1);

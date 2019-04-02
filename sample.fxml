@@ -55,7 +55,7 @@
                               <Insets left="50.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#btnSubmitClick" prefHeight="76.0" prefWidth="84.0" text="SUBMIT">
+                        <Button mnemonicParsing="false" onAction="#btnSubmitClick" prefHeight="76.0" prefWidth="84.0" text="CHART">
                            <HBox.margin>
                               <Insets left="30.0" />
                            </HBox.margin>
@@ -82,21 +82,6 @@
             </VBox>
          </content>
     </Tab>
-      <Tab text="Results Overview">
-         <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <BarChart>
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </BarChart>
-               </children></AnchorPane>
-         </content>
-      </Tab>
       <Tab text="Stack &amp; Queue">
          <content>
             <AnchorPane prefHeight="411.0" prefWidth="522.0">

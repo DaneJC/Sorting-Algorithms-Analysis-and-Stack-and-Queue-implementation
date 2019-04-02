@@ -230,6 +230,9 @@ public class Controller {
     /** Execute algorithm analysis */
     private void runAssessment() {
 
+        System.out.println(selectedSort.getAlgoName()+" | "+selectedSort.getDataSet()+" | "+selectedSort.getDataSize());
+        for(int i=0; i<30; i++) {System.out.print("-");}
+        System.out.println("\nPRE: 1st: "+dataSet[0]+" last: "+dataSet[dataSet.length-1]);
         if(selectedSort instanceof BubbleSort && cBoxSort.getSelectionModel().getSelectedIndex() == 1) {
 
             logSelector = 1;
@@ -246,7 +249,10 @@ public class Controller {
         runTimeLogs[logSelector][logIndexSelector] += selectedSort.getElapsedTime();
         // count amount of assessments to average down the results
         sortCountLogs[logSelector][logIndexSelector] += 1;
-        System.out.println(selectedSort.getElapsedTime());
+        System.out.println("PST: 1st: "+dataSet[0]+" last: "+dataSet[dataSet.length-1]);
+        for(int i=0; i<30; i++)
+            System.out.print("=");
+        System.out.println();
     }
 
     /** Log results in tableview */
@@ -375,8 +381,10 @@ public class Controller {
         GraphDialogController dialogController = fxmlLoader.getController();
         dialogController.setGraphContents(runTimeLogs);
 
-        Scene scene = new Scene(parent, 1200, 600);
+        Scene scene = new Scene(parent, 1200, 525);
         Stage stage = new Stage();
+        stage.getIcons().add(new Image(this.getClass().getResource("icon.png").toString()));
+        stage.setTitle("Assessment Results");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.showAndWait();

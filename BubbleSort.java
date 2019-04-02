@@ -23,13 +23,13 @@ public class BubbleSort extends SortAlgorithm{
 		{
 			for(long j = 0; j < array.length-1; j++)
 			{
-				super.setComparisons(super.getComparisons()+1);
+				super.incComparisons();  // compare current index to next index
 				if(array[(int) j] > array[(int) (j+1)])
 				{
 					temp = array[(int) j];
 					array[(int) j] = array[(int) (j+1)];
 					array[(int) (j+1)] = temp;
-					super.setSwaps(super.getSwaps()+1);
+					super.incSwaps();  // swap current index with next index
 				}
 			}
 		}
@@ -51,14 +51,14 @@ public class BubbleSort extends SortAlgorithm{
 
 			for(int j = 0; j < i; j++)
 			{
-				super.setComparisons(super.getComparisons()+1);
+				super.incComparisons();  // compare current index to next index
 				if(array[j] > array[j+1])
 				{
 					sorted = false;
 					temp = array[j];
 					array[j] = array[j+1];
 					array[j+1] = temp;
-					super.setSwaps(super.getSwaps()+1);
+					super.incSwaps();  // swap current index with next index
 				}
 			}
 			if(sorted)

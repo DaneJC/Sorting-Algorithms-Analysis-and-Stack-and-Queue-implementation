@@ -18,12 +18,12 @@ public class InsertionSort extends SortAlgorithm{
 		for (int i = 1; i < array.length; i++) {
 
 			int next = array[i];
-			super.setComparisons(getComparisons()+1);
+
 			// find the insertion location while moving all larger element up
 			int j = i;
 			while (j > 0 && array[j - 1] > next) {
-				super.setComparisons(getComparisons()+1);
-				super.setSwaps(getSwaps()+1);
+				super.incComparisons();
+				super.incSwaps();
 				array[j] = array[j - 1];
 				j--;
 			}

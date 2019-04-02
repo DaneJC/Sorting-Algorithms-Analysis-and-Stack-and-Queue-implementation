@@ -65,6 +65,15 @@ public abstract class SortAlgorithm extends StopWatch{
 		this.swaps = swaps;
 	}
 
+	// incrementer's
+	public void incComparisons() {
+		this.comparisons++;
+	}
+
+	public void incSwaps() {
+		this.swaps++;
+	}
+
 	/* ===== Every algorithm possesses a sort method  ===== */
 	public abstract void Sort(int[] array);
 
